@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neumorphic Pokémon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #e0e5ec;
+            font-family: 'Comic Neue', cursive;
+            color: #333333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            font-weight: 700;
+            margin: 0;
+            text-transform: uppercase;
+            color: #333333;
+            margin-bottom: 40px;
+            box-shadow: inset 6px 6px 12px #c8ccd4, inset -6px -6px 12px #ffffff;
+            padding: 20px 40px;
+            border-radius: 20px;
+            background-color: #e0e5ec;
+        }
+
+        #pokemonImage {
+            width: 300px;
+            height: 300px;
+            background-color: #e0e5ec;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            box-shadow: 9px 9px 16px #babecc, -9px -9px 16px #ffffff;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        #pokemonImage img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        #pokemonName {
+            font-size: 2em;
+            font-weight: bold;
+            margin-top: 20px;
+            text-transform: uppercase;
+            color: #333333;
+        }
+
+        button {
+            margin-top: 30px;
+            padding: 15px 30px;
+            background-color: #e0e5ec;
+            color: #333333;
+            font-size: 1.5em;
+            text-transform: uppercase;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 9px 9px 16px #babecc, -9px -9px 16px #ffffff;
+            transition: 0.3s ease-in-out;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 6px 6px 12px #babecc, -6px -6px 12px #ffffff;
+        }
+
+        button:active {
+            transform: scale(0.95);
+            box-shadow: inset 9px 9px 16px #babecc, inset -9px -9px 16px #ffffff;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+
+            #pokemonImage {
+                width: 250px;
+                height: 250px;
+            }
+
+            button {
+                font-size: 1.2em;
+                padding: 15px 25px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            #pokemonImage {
+                width: 200px;
+                height: 200px;
+            }
+
+            button {
+                font-size: 1.1em;
+                padding: 12px 20px;
+            }
+
+            #pokemonName {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>HELLO Pokémon</h1>
+    <div id="pokemonImage">
+        <img id="image" src="" alt="Pokémon Image">
+    </div>
+    <div id="pokemonName">Click Below!</div>
+    <button id="randomBtn">Get Random Pokémon</button>
+
+    <!-- Sound effects -->
+    <audio id="clickSound" src="https://www.fesliyanstudios.com/play-mp3/387" preload="auto"></audio>
+    <audio id="hoverSound" src="https://www.fesliyanstudios.com/play-mp3/380" preload="auto"></audio>
+
+    <script>
+        const button = document.getElementById('randomBtn');
+        const pokemonImage = document.getElementById('pokemonImage');
+        const pokemonImgElement = document.getElementById('image');
+        const pokemonName = document.getElementById('pokemonName');
+        const clickSound = document.getElementById('clickSound');
+        const hoverSound = document.getElementById('hoverSound');
+
+        // Button click sound and image shake animation
+        button.addEventListener('click', () => {
+            // Play click sound
+            clickSound.play();
+
+            // Fetch random Pokémon
+            fetch('https://pokeapi.co/api/v2/pokemon/' + Math.floor(Math.random() * 898))
+                .then(response => response.json())
+                .then(data => {
+                    pokemonImgElement.src = data.sprites.front_default;
+                    pokemonName.textContent = data.name.toUpperCase();
+                    // Animate image pop
+                    pokemonImage.style.transform = "scale(1.1)";
+                    setTimeout(() => {
+                        pokemonImage.style.transform = "scale(1)";
+                    }, 300);
+                })
+                .catch(err => console.error(err));
+        });
+
+        // Play hover sound on hover
+        button.addEventListener('mouseover', () => {
+            hoverSound.play();
+        });
+    </script>
+</body>
+</html>
